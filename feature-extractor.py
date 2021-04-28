@@ -4,24 +4,27 @@
 import re
 from os import listdir
 
-WORD_COUNT_THRESHOLD = 5
-word_counts = {}
+FILE_COUNT_THRESHOLD = 20
+FILE_COUNT_MAX_PROPORTION = 0.5
+file_counts = {} # number of files a feature (word) occurs in
 feature_map = {} # to map features (words) to node indices
 classes = {} # classes (newsgroups) which documents may fall under
 excluded_files = []
+num_files = 0
 
 def get_words(file_str):
     matches = re.findall("\w+\s+", contents_str)
     for i in range(len(matches)):
-        matches[i] = matches[i].strip()
+        matches[i] = matches[i].strip().upper()
     return matches
 
 # maps features (words) to node indexes
-def create_feature_map(word_counts):
+def create_feature_map(file_counts, num_files):
+    max_file_count = FILE_COUNT_MAX_PROPORTION * num_files
     node_idx = 0
     feature_map = {} 
-    for (key, val) in word_counts.items():
-        if val >= WORD_COUNT_THRESHOLD:
+    for (key, val) in file_counts.items():
+        if val >= FILE_COUNT_THRESHOLD and val <= max_file_count:
             feature_map[key] = node_idx
             node_idx += 1
     
@@ -45,18 +48,23 @@ for class_name in classes:
         
         end_header = end_header.end()
         contents_str = file_str[end_header:]
-        words = get_words(file_str)
+        words = get_words(contents_str)
 
+        word_occurrences = {}
         for word in words:
-            word = word.upper()
-            if word in word_counts:
-                word_counts[word] += 1
+            if word not in word_occurrences:
+                word_occurrences[word] = True
+                
+        for word in word_occurrences:
+            if word not in file_counts:
+                file_counts[word] = 1
             else:
-                word_counts[word] = 1
+                file_counts[word] += 1
+        num_files += 1
 
-feature_map = create_feature_map(word_counts)
+feature_map = create_feature_map(file_counts, num_files)
 
-print( len(word_counts) )
+print( len(file_counts) )
 print( len(feature_map) )
 
 features_str = ""
