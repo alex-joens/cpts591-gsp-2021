@@ -3,8 +3,9 @@
 
 import re
 import numpy as np
-import networkx as nx
 from os import listdir
+from utils import get_file_contents
+from utils import get_words
 
 LABELED_SET_SIZE = 15
 feature_map = {} # to map features (words) to node indices
@@ -20,22 +21,6 @@ classes_list = listdir("20_newsgroups")
 for i in range(len(classes_list)):
     classes[classes_list[i]] = i
 
-def get_words(file_str):
-    matches = re.findall("\w+\s+", contents_str)
-    for i in range(len(matches)):
-        matches[i] = matches[i].strip().upper()
-    return matches
-    
-def get_file_contents(file):
-    file_str = file.read()
-        
-    end_header = re.search("Lines:\s*\d+", file_str)
-    if end_header is None:
-        return ""
-    
-    end_header = end_header.end()
-    return file_str[end_header:]
-
 # add files to the adjacency matrix
 n = len(feature_map)
 adjacency_matrix = np.zeros(n * n)
@@ -48,10 +33,10 @@ for (class_name, class_id) in classes.items():
     
     for file_name in files:
         word_occurrences = {}
-        file = open("{}/{}".format(directory, file_name), "r")
-        
-        contents_str = get_file_contents(file)
+        file_str = open("{}/{}".format(directory, file_name), "r").read()
+        contents_str = get_file_body(file_str)
         words = get_words(contents_str)
+        
         for word in words:
             if word not in feature_map:
                 continue
@@ -89,10 +74,10 @@ for (class_name, class_id) in classes.items():
     for i in range(LABELED_SET_SIZE):
         file_name = files[i]
         word_occurrences = {}
-        file = open("{}/{}".format(directory, file_name), "r")
-        
-        contents_str = get_file_contents(file)
+        file_str = open("{}/{}".format(directory, file_name), "r").read()
+        contents_str = get_file_contents(file_str)
         words = get_words(contents_str)
+        
         for word in words:
             if word not in feature_map:
                 continue

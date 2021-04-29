@@ -3,6 +3,8 @@
 
 import re
 from os import listdir
+from utils import get_file_contents
+from utils import get_words
 
 FILE_COUNT_THRESHOLD = 20
 FILE_COUNT_MAX_PROPORTION = 0.5
@@ -11,12 +13,6 @@ feature_map = {} # to map features (words) to node indices
 classes = {} # classes (newsgroups) which documents may fall under
 excluded_files = []
 num_files = 0
-
-def get_words(file_str):
-    matches = re.findall("\w+\s+", contents_str)
-    for i in range(len(matches)):
-        matches[i] = matches[i].strip().upper()
-    return matches
 
 # maps features (words) to node indexes
 def create_feature_map(file_counts, num_files):
@@ -38,16 +34,8 @@ for class_name in classes:
     print(directory)
     
     for file_name in files:
-        file = open("{}/{}".format(directory, file_name), "r")
-        file_str = file.read()
-        
-        end_header = re.search("Lines:\s*\d+", file_str)
-        if end_header is None:
-            excluded_files.append("{}/{}".format(directory, file_name))
-            continue
-        
-        end_header = end_header.end()
-        contents_str = file_str[end_header:]
+        file_str = open("{}/{}".format(directory, file_name), "r").read()
+        contents_str = utils.get_file_body(file_str)
         words = get_words(contents_str)
 
         word_occurrences = {}
