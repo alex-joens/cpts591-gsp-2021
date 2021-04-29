@@ -3,7 +3,7 @@
 
 import re
 from os import listdir
-from utils import get_file_contents
+from utils import get_file_body
 from utils import get_words
 
 FILE_COUNT_THRESHOLD = 20
@@ -35,7 +35,7 @@ for class_name in classes:
     
     for file_name in files:
         file_str = open("{}/{}".format(directory, file_name), "r").read()
-        contents_str = utils.get_file_body(file_str)
+        contents_str = get_file_body(file_str)
         words = get_words(contents_str)
 
         word_occurrences = {}

@@ -9,7 +9,7 @@ def get_words(contents_str):
         matches[i] = matches[i].strip().upper()
     return matches
     
-def get_file_contents(file_str):
+def get_file_body(file_str):
     end_header = re.search("Lines:\s*\d+", file_str)
     if end_header is None:
         return ""

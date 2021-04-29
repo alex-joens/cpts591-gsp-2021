@@ -4,7 +4,7 @@
 import re
 import numpy as np
 from os import listdir
-from utils import get_file_contents
+from utils import get_file_body
 from utils import get_words
 
 LABELED_SET_SIZE = 15
@@ -75,7 +75,7 @@ for (class_name, class_id) in classes.items():
         file_name = files[i]
         word_occurrences = {}
         file_str = open("{}/{}".format(directory, file_name), "r").read()
-        contents_str = get_file_contents(file_str)
+        contents_str = get_file_body(file_str)
         words = get_words(contents_str)
         
         for word in words:
