@@ -1,0 +1,9 @@
+num_correct: 179
+num_incorrect: 821
+average_assigned_score: 51.726
+average_actual_score: 49.208
+average_average_score: 46.7032
+average_words_correct: 22.028
+average_words_incorrect: 62.754
+average_features_correct: 16.148
+average_features_incorrect: 50.878

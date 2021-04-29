@@ -1,0 +1,9 @@
+num_correct: 90
+num_incorrect: 907
+average_assigned_score: 90.24774322968906
+average_actual_score: 85.81845536609829
+average_average_score: 77.08821464393175
+average_words_correct: 16.39518555667001
+average_words_incorrect: 163.90170511534603
+average_features_correct: 10.365095285857572
+average_features_incorrect: 104.87261785356068
